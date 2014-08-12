@@ -24,19 +24,9 @@ module BikeContainer
 		bikes << bike 
 	end
 
-	def release(bike)
-		
-		if  bike.class != Bike 
-			if bike == nil
-				raise "no bike specified"
-			else
-				raise "this is not a bike"
-			end
-		elsif bikes.include?(bike) == true				
-			bikes.delete(bike) 
-		else 
-			raise "bike not docked"
-		end
+	def release bike
+		raise "this is not a bike" unless bike.is_a? Bike
+		raise "bike not docked" unless bikes.delete(bike)
 	end
 
 	def full?
@@ -47,3 +37,6 @@ module BikeContainer
 		bikes.reject {|bike| bike.broken?}
 	end
 end
+
+	
+
