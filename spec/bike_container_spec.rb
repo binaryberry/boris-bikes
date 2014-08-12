@@ -39,7 +39,7 @@ describe BikeContainer do
 	end
 
 	def fill_holder(holder)
-		holder.capacity.times { holder.dock(Bike.new)}
+		holder.capacity.times { holder.dock(Bike.new) }
 	end
 
 	it "should provide the list of available bikes" do
@@ -66,6 +66,13 @@ describe BikeContainer do
 
 	it "should show an error if we try to dock something that is not a bike" do
 		expect(lambda{holder.dock(:airplane)}).to raise_error("this is not a bike")
+	end
+
+	it "should know when it's empty" do
+		holder.dock(bike)
+		expect(holder.empty?).to be false
+		holder.release(bike)
+		expect(holder.empty?).to be true
 	end
 
 end
