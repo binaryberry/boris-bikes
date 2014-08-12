@@ -1,11 +1,12 @@
-require './lib/bike_container.rb'
+require 'bike_container'
+require 'bike'
 
 
 class ContainerHolder; include BikeContainer; end
 
 describe BikeContainer do 
-	let(:bike) { double :bike, broken?: false }
-	let(:broken_bike) { double :bike, broken?: true}
+	let(:bike) { Bike.new}
+	let(:other_bike) {Bike.new}
 	let(:holder) { ContainerHolder.new }
 
 
@@ -41,12 +42,22 @@ describe BikeContainer do
 
 	it "should provide the list of available bikes" do
 		holder.dock(bike)
-		holder.dock(broken_bike)
+		other_bike.break!
+		holder.dock(other_bike)
 		expect(holder.available_bikes).to eq([bike])
 	end
 
 	it "should only release bikes which are in the dock" do
 		expect(lambda{holder.release(bike)}).to raise_error("bike not docked")
+	end
+
+	it "should show an error if we try to release 'no' bike" do
+		bike = nil
+		expect(lambda{holder.release(bike)}).to raise_error("no bike specified")
+	end
+
+	it "should show an error if we try to release somthing that is not a bike" do
+		expect(lambda{holder.release(:airplane)}).to raise_error("this is not a bike")
 	end
 
 end
