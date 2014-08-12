@@ -1,4 +1,4 @@
-require './lib/bike_container'
+require './lib/bike_container.rb'
 
 
 class ContainerHolder; include BikeContainer; end
@@ -6,7 +6,6 @@ class ContainerHolder; include BikeContainer; end
 describe BikeContainer do 
 	let(:bike) { double :bike, broken?: false }
 	let(:broken_bike) { double :bike, broken?: true}
-
 	let(:holder) { ContainerHolder.new }
 
 
@@ -45,4 +44,9 @@ describe BikeContainer do
 		holder.dock(broken_bike)
 		expect(holder.available_bikes).to eq([bike])
 	end
+
+	it "should only release bikes which are in the dock" do
+		expect(lambda{holder.release(bike)}).to raise_error("bike not docked")
+	end
+
 end

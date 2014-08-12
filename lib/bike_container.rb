@@ -2,6 +2,7 @@ module BikeContainer
 
 	DEFAULT_CAPACITY = 10
 
+
 	def bikes
 		@bikes ||= []
 	end
@@ -19,12 +20,16 @@ module BikeContainer
 	end
 
 	def dock(bike)
-		raise "Station is full" if full?
+		raise "There is no more room for bikes" if full?
 		bikes << bike 
 	end
 
 	def release(bike)
-		bikes.delete(bike)
+		if bikes.include?(bike) == true				
+			bikes.delete(bike) 
+		else
+			raise "bike not docked"
+		end
 	end
 
 	def full?
