@@ -8,13 +8,15 @@ describe BikeContainer do
 	let(:bike) { Bike.new}
 	let(:other_bike) {Bike.new}
 	let(:holder) { ContainerHolder.new }
-
+	let!(:specialized) { Bike.new }
+	
 
 	it "should accept a bike" do
 		#We expect the holder to have 0 bikes
 		expect(holder.bike_count).to eq(0)
 		#let's doch a bike into the holder
 		holder.dock(bike)
+
 		# now we expect the holder to have 1 bike
 		expect(holder.bike_count).to eq(1)
 	end
@@ -37,7 +39,7 @@ describe BikeContainer do
 	end
 
 	def fill_holder(holder)
-		holder.capacity.times { holder.dock(bike)}
+		holder.capacity.times { holder.dock(Bike.new)}
 	end
 
 	it "should provide the list of available bikes" do
@@ -51,8 +53,19 @@ describe BikeContainer do
 		expect(lambda{holder.release(bike)}).to raise_error("bike not docked")
 	end
 
-	it "should show an error if we try to release somthing that is not a bike" do
+	it "should show an error if we try to release something that is not a bike" do
 		expect(lambda{holder.release(:airplane)}).to raise_error("this is not a bike")
+	end
+
+	it "should only dock bikes which are not in the dock" do
+		holder.dock(specialized)
+		expect(holder.bike_count).to eq(1)
+		holder.dock(specialized)
+		expect(holder.bike_count).to eq(1)
+	end
+
+	it "should show an error if we try to dock something that is not a bike" do
+		expect(lambda{holder.dock(:airplane)}).to raise_error("this is not a bike")
 	end
 
 end

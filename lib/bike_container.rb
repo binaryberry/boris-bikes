@@ -20,8 +20,9 @@ module BikeContainer
 	end
 
 	def dock(bike)
+		raise "this is not a bike" unless bike.is_a? Bike 
 		raise "There is no more room for bikes" if full?
-		bikes << bike 
+		bikes << bike unless bikes.include?(bike)
 	end
 
 	def release bike
